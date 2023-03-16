@@ -132,6 +132,38 @@ onCurrentUserSubscriptionUpdate(
 );
 ```
 
+## Start a one-time payment checkout session
+
+```js
+import { createCheckoutSession } from "@stripe/firestore-stripe-payments";
+
+const session = await createCheckoutSession(payments, {
+  price: myPriceId,
+  quantity: amountOfProduct,
+  mode: "payment"
+});
+window.location.assign(session.url);
+```
+
+For one-time payments you need to specify a quantity, and explicity 
+set the mode to be "payment".
+
+To create a one-time payment checkout session with multiple items,
+replace the price and quantity fields with line_items.
+
+```js
+import { createCheckoutSession } from "@stripe/firestore-stripe-payments";
+
+const session = await createCheckoutSession(payments, {  
+  line_items: [
+    { price: myPriceId1, quantity: 1 },
+    { price: myPriceId2, quantity: 1 },
+  ],  
+  mode: "payment"
+});
+window.location.assign(session.url);
+```
+
 # Dependencies
 
 * Cloud Firestore (`@firebase/firestore`)
